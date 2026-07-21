@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { AnimatePresence } from "framer-motion";
 import Header from "@/components/Header";
 import DropZone from "@/components/DropZone";
 import PlatformTags from "@/components/PlatformTags";
@@ -29,7 +28,6 @@ export default function Home() {
       setResult(null);
 
       try {
-        // Step 1: Scrape the chat
         const scrapeRes = await fetch("/api/scrape", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -44,7 +42,6 @@ export default function Home() {
           return;
         }
 
-        // Step 2: Summarize based on active tool
         const toolModeMap: Record<string, string> = {
           summarize: "summary",
           transcript: "transcript",
@@ -68,11 +65,7 @@ export default function Home() {
         if (summarizeData.success) {
           setResult(summarizeData);
           setMode(toolModeMap[activeTool] || "summary");
-          showToast(
-            scrapeData.isMock
-              ? "Demo mode: Mock data generated"
-              : "Chat processed successfully!"
-          );
+          showToast(scrapeData.isMock ? "Demo mode: Mock data generated" : "Chat processed successfully!");
         } else {
           showToast(summarizeData.error || "Failed to summarize");
         }
@@ -105,16 +98,14 @@ export default function Home() {
           <Features />
         </div>
 
-        <AnimatePresence>
-          {result && (
-            <ResultPanel
-              result={result}
-              mode={mode}
-              onModeChange={setMode}
-              onClose={() => setResult(null)}
-            />
-          )}
-        </AnimatePresence>
+        {result && (
+          <ResultPanel
+            result={result}
+            mode={mode}
+            onModeChange={setMode}
+            onClose={() => setResult(null)}
+          />
+        )}
 
         <ToolsGrid onToolSelect={handleToolSelect} activeTool={activeTool} />
       </div>

@@ -2,7 +2,6 @@
 
 import { useState, useCallback } from "react";
 import { Clipboard, Link, Loader2 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 interface DropZoneProps {
@@ -37,76 +36,38 @@ export default function DropZone({ onSubmit, isLoading }: DropZoneProps) {
     [onSubmit]
   );
 
-  const handlePaste = useCallback(
-    (e: ClipboardEvent) => {
-      const text = e.clipboardData?.getData("text");
-      if (text && (text.includes("http") || text.includes("chat"))) {
-        setUrl(text);
-        onSubmit(text);
-      }
-    },
-    [onSubmit]
-  );
-
-  // Listen for paste events
-  useState(() => {
-    if (typeof window !== "undefined") {
-      window.addEventListener("paste", handlePaste);
-      return () => window.removeEventListener("paste", handlePaste);
-    }
-  });
-
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.3 }}
-      className="mx-auto max-w-3xl"
-    >
-      {/* Drop Zone */}
+    <div className="mx-auto max-w-3xl">
       <div
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         onClick={() => document.getElementById("url-input")?.focus()}
         className={cn(
-          "cursor-pointer rounded-2xl border-3 border-dashed p-8 text-center transition-all duration-300 md:p-12",
+          "cursor-pointer rounded-2xl border-[3px] border-dashed p-8 text-center transition-all duration-300 md:p-12",
           isDragOver
             ? "border-pink-400 bg-pink-50 scale-[1.02]"
             : "border-slate-200 bg-slate-50 hover:border-indigo-400 hover:bg-indigo-50/50"
         )}
       >
-        <AnimatePresence mode="wait">
-          {isDragOver ? (
-            <motion.div
-              key="drop"
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
-            >
-              <Link className="mx-auto mb-3 h-12 w-12 text-pink-500" />
-              <p className="text-lg font-semibold text-pink-600">Drop it here!</p>
-            </motion.div>
-          ) : (
-            <motion.div
-              key="idle"
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
-            >
-              <Clipboard className="mx-auto mb-3 h-12 w-12 text-indigo-400" />
-              <h3 className="mb-1 text-lg font-semibold text-slate-800">
-                Paste or Drop Your Chat Link
-              </h3>
-              <p className="text-sm text-slate-500">
-                Supports Claude, ChatGPT, Gemini, Perplexity, Kimi, and more
-              </p>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {isDragOver ? (
+          <div>
+            <Link className="mx-auto mb-3 h-12 w-12 text-pink-500" />
+            <p className="text-lg font-semibold text-pink-600">Drop it here!</p>
+          </div>
+        ) : (
+          <div>
+            <Clipboard className="mx-auto mb-3 h-12 w-12 text-indigo-400" />
+            <h3 className="mb-1 text-lg font-semibold text-slate-800">
+              Paste or Drop Your Chat Link
+            </h3>
+            <p className="text-sm text-slate-500">
+              Supports Claude, ChatGPT, Gemini, Perplexity, Kimi, and more
+            </p>
+          </div>
+        )}
       </div>
 
-      {/* URL Input */}
       <div className="mt-6 flex flex-col gap-3 sm:flex-row">
         <div className="relative flex-1">
           <Link className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
@@ -140,6 +101,6 @@ export default function DropZone({ onSubmit, isLoading }: DropZoneProps) {
           )}
         </button>
       </div>
-    </motion.div>
+    </div>
   );
 }
