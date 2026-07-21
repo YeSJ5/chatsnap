@@ -58,7 +58,7 @@ export function generateSummary(chat: ScrapedChat): SummaryResult {
   return {
     summary: keySentences.join(' ') || chat.messages.slice(0, 3).map(m => m.content).join(' '),
     keyPoints: keySentences.map(s => s.trim()),
-    actionItems: [...new Set(actionItems)].slice(0, 6),
+    actionItems: Array.from(new Set(actionItems)).slice(0, 6),
     sentiment,
     topics: topics.length > 0 ? topics : ['General Discussion'],
     wordCount: allText.split(/\s+/).length,
