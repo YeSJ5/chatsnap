@@ -68,11 +68,11 @@ export function generateMockData(platform: string): ScrapedChat {
     messages: [
       {
         role: 'user',
-        content: `Hey, I need help with ${topic.toLowerCase()}. We're building a new system and need to make some key architectural decisions.`,
+        content: `Hey, I need help with ${topic.toLowerCase()}. We are building a new system and need to make some key architectural decisions.`,
       },
       {
         role: 'assistant',
-        content: `I'd be happy to help with ${topic.toLowerCase()}. Let me break this down into key considerations. First, let's look at your current requirements and constraints.`,
+        content: `I would be happy to help with ${topic.toLowerCase()}. Let me break this down into key considerations. First, let us look at your current requirements and constraints.`,
       },
       {
         role: 'user',
@@ -100,11 +100,11 @@ export function generateMockData(platform: string): ScrapedChat {
       },
       {
         role: 'user',
-        content: 'Perfect. Let's lock this in. Timeline?',
+        content: "Perfect. Let us lock this in. Timeline?",
       },
       {
         role: 'assistant',
-        content: '6-week sprint: Week 1-2: Setup & scaffolding, Week 3-4: Core features, Week 5: Integration testing, Week 6: Deploy & monitor. I'll draft a detailed plan.',
+        content: '6-week sprint: Week 1-2: Setup & scaffolding, Week 3-4: Core features, Week 5: Integration testing, Week 6: Deploy & monitor. I will draft a detailed plan.',
       },
       {
         role: 'user',
@@ -112,7 +112,7 @@ export function generateMockData(platform: string): ScrapedChat {
       },
       {
         role: 'assistant',
-        content: 'Absolutely. GitHub Actions + Docker + AWS ECS is the golden path. I'll set up automated testing, building, and deployment with rollback capabilities.',
+        content: 'Absolutely. GitHub Actions + Docker + AWS ECS is the golden path. I will set up automated testing, building, and deployment with rollback capabilities.',
       },
     ],
     metadata: {

@@ -54,7 +54,7 @@ export function generateSummary(chat: ScrapedChat): SummaryResult {
 
   // Simple sentiment
   const positiveWords = ['perfect', 'great', 'awesome', 'excellent', 'love', 'happy', 'agree', 'yes'];
-  const negativeWords = ['bad', 'wrong', 'issue', 'problem', 'concern', 'worry', 'no', 'don't'];
+  const negativeWords = ['bad', 'wrong', 'issue', 'problem', 'concern', 'worry', 'no', "do not"];
   const posCount = positiveWords.filter(w => allText.toLowerCase().includes(w)).length;
   const negCount = negativeWords.filter(w => allText.toLowerCase().includes(w)).length;
   let sentiment: 'positive' | 'neutral' | 'negative' = 'neutral';
@@ -74,40 +74,18 @@ export function generateSummary(chat: ScrapedChat): SummaryResult {
 export function generateTranscript(chat: ScrapedChat): TranscriptResult {
   const formatted = chat.messages.map((m, i) => {
     const role = m.role === 'user' ? '👤 User' : '🤖 Assistant';
-    return `${role}:
-${m.content}
-`;
-  }).join('
----
+    return `${role}:\n${m.content}\n`;
+  }).join('\n---\n\n');
 
-');
-
-  const markdown = `## ${chat.title}
-
-**Source:** ${chat.source}
-**Date:** ${chat.metadata.date ? new Date(chat.metadata.date).toLocaleDateString() : 'Unknown'}
-**Messages:** ${chat.metadata.totalMessages}
-
----
-
-${chat.messages.map(m => {
+  const markdown = `## ${chat.title}\n\n**Source:** ${chat.source}\n**Date:** ${chat.metadata.date ? new Date(chat.metadata.date).toLocaleDateString() : 'Unknown'}\n**Messages:** ${chat.metadata.totalMessages}\n\n---\n\n${chat.messages.map(m => {
     const role = m.role === 'user' ? '**User**' : '**Assistant**';
-    return `${role}:
-${m.content}`;
-  }).join('
-
----
-
-')}`;
+    return `${role}:\n${m.content}`;
+  }).join('\n\n---\n\n')}`;
 
   const html = chat.messages.map(m => {
     const isUser = m.role === 'user';
-    return `<div class="message ${isUser ? 'user' : 'assistant'}">
-  <div class="message-header">${isUser ? '👤' : '🤖'} ${isUser ? 'User' : 'Assistant'}</div>
-  <div class="message-content">${m.content}</div>
-</div>`;
-  }).join('
-');
+    return `<div class="message ${isUser ? 'user' : 'assistant'}">\n  <div class="message-header">${isUser ? '👤' : '🤖'} ${isUser ? 'User' : 'Assistant'}</div>\n  <div class="message-content">${m.content}</div>\n</div>`;
+  }).join('\n');
 
   return { formatted, markdown, html };
 }
@@ -119,7 +97,7 @@ export function generateAnalysis(chat: ScrapedChat): AnalysisResult {
 
   // Sentiment analysis
   const positiveWords = ['perfect', 'great', 'awesome', 'excellent', 'love', 'happy', 'agree', 'yes', 'good', 'best'];
-  const negativeWords = ['bad', 'wrong', 'issue', 'problem', 'concern', 'worry', 'no', 'don't', 'hate', 'terrible'];
+  const negativeWords = ['bad', 'wrong', 'issue', 'problem', 'concern', 'worry', 'no', "do not", 'hate', 'terrible'];
   const posCount = positiveWords.filter(w => allText.toLowerCase().includes(w)).length;
   const negCount = negativeWords.filter(w => allText.toLowerCase().includes(w)).length;
   const total = posCount + negCount + 1;
