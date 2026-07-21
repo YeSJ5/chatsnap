@@ -15,10 +15,8 @@ export interface ScrapedChat {
   };
 }
 
-// Detect which platform a URL belongs to
 export function detectPlatform(url: string): string {
   const domain = new URL(url).hostname.toLowerCase();
-
   if (domain.includes('chat.openai.com') || domain.includes('chatgpt.com')) return 'ChatGPT';
   if (domain.includes('claude.ai')) return 'Claude';
   if (domain.includes('gemini.google.com') || domain.includes('bard.google.com')) return 'Gemini';
@@ -28,11 +26,9 @@ export function detectPlatform(url: string): string {
   if (domain.includes('deepseek.com')) return 'DeepSeek';
   if (domain.includes('poe.com')) return 'Poe';
   if (domain.includes('huggingface.co')) return 'HuggingFace';
-
   return 'Unknown';
 }
 
-// Extract chat ID from various URL formats
 export function extractChatId(url: string): string | null {
   const patterns = [
     /chat.openai.com\/share\/([a-zA-Z0-9_-]+)/,
@@ -41,16 +37,13 @@ export function extractChatId(url: string): string | null {
     /gemini.google.com\/app\/([a-zA-Z0-9_-]+)/,
     /perplexity.ai\/search\/([a-zA-Z0-9_-]+)/,
   ];
-
   for (const pattern of patterns) {
     const match = url.match(pattern);
     if (match) return match[1];
   }
-
   return null;
 }
 
-// Generate mock data for demo purposes when scraping fails
 export function generateMockData(platform: string): ScrapedChat {
   const topics = [
     'Microservices Architecture Decision',
@@ -59,9 +52,7 @@ export function generateMockData(platform: string): ScrapedChat {
     'CI/CD Pipeline Setup',
     'API Gateway Configuration',
   ];
-
   const topic = topics[Math.floor(Math.random() * topics.length)];
-
   return {
     title: `${platform} Conversation: ${topic}`,
     source: platform,
